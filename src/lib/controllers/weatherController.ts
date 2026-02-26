@@ -28,6 +28,8 @@ export async function fetchNWSHourlyForecast(
         next: { revalidate: 0 }, // no cache
       }
     );
+    
+    console.log(`[DEBUG] NWS API Call: ${res.url} - Status: ${res.status}`);
 
     if (!res.ok) {
       console.error(`NWS API error: ${res.status} ${res.statusText}`);
