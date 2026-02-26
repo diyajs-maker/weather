@@ -59,7 +59,6 @@ export const createCity = async (req: NextRequest) => {
 
     const token = authHeader.split(" ")[1];
     const user = verifyToken(token) as TokenPayload;
-
     if (!user) {
       return NextResponse.json({ message: "Invalid token" }, { status: 401 });
     }
