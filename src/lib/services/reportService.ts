@@ -3,7 +3,6 @@ import { db, sql } from '@/lib/db/client';
 import { sendEmail } from './emailService';
 
 import { put } from '@vercel/blob';
-import PDFDocument from 'pdfkit';
 
 export interface ReportData {
   buildingId: string;
@@ -78,6 +77,7 @@ export class ReportService {
   }
 
   async generatePDF(reportData: ReportData): Promise<string> {
+    const PDFDocument = (await import('pdfkit')).default;
     const monthNames = [
       'January', 'February', 'March', 'April', 'May', 'June',
       'July', 'August', 'September', 'October', 'November', 'December'

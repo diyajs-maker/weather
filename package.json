@@ -11,6 +11,7 @@
     "db:seed": "tsx src/lib/db/seed.ts",
     "test:ms1": "npx tsx scripts/test-milestone1.ts",
     "test:alert-logic": "npx tsx scripts/test-alert-logic.ts",
+    "test:sendgrid": "npx tsx scripts/test-sendgrid.ts",
     "check-city-config": "npx tsx scripts/check-city-config.ts"
   },
   "dependencies": {

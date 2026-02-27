@@ -22,6 +22,15 @@ export interface EmailOptions {
 
 export async function sendEmail(options: EmailOptions): Promise<EmailResult> {
   if (!apiKey || !fromEmail) {
+    // Dev mock: log email to console so you can test the flow without a real key
+    if (process.env.NODE_ENV !== 'production' && process.env.SENDGRID_DEV_MOCK === 'true') {
+      console.log('[DEV MOCK] Email would have been sent:', {
+        to: options.to,
+        subject: options.subject,
+        textPreview: options.text.slice(0, 100) + (options.text.length > 100 ? '...' : ''),
+      });
+      return { success: true, messageId: 'dev-mock-' + Date.now() };
+    }
     console.warn('SendGrid not configured, email not sent');
     return {
       success: false,
@@ -45,10 +54,17 @@ export async function sendEmail(options: EmailOptions): Promise<EmailResult> {
       messageId: response.headers['x-message-id'] as string,
     };
   } catch (error: any) {
-    console.error('Error sending email:', error);
+    const sendgridMsg = error.response?.body?.errors?.[0]?.message || error.response?.body?.errors?.[0];
+    const errDetail = sendgridMsg
+      ? `${error.message} — ${typeof sendgridMsg === 'string' ? sendgridMsg : JSON.stringify(sendgridMsg)}`
+      : error.message;
+    console.error('Error sending email:', errDetail);
+    if (error.response?.body?.errors) {
+      console.error('SendGrid details:', error.response.body.errors);
+    }
     return {
       success: false,
-      error: error.message || 'Failed to send email',
+      error: errDetail || 'Failed to send email',
     };
   }
 }

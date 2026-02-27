@@ -10,6 +10,8 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // Avoid Turbopack bundling pdfkit/fontkit (incompatible with @swc/helpers ESM)
+  serverExternalPackages: ['pdfkit', 'fontkit'],
 };
 
 export default nextConfig;

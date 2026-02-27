@@ -6,7 +6,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 function UploadContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const token = searchParams.get("token");
+  const token = searchParams?.get("token") ?? null;
 
   const [context, setContext] = useState<any>(null);
   const [loading, setLoading] = useState(true);
